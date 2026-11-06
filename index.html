@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dos Años de Amor · Anghelo & Valeria</title>
+<meta name="description" content="Una crónica de amor en dos años: Anghelo y Valeria.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Great+Vibes&family=IM+Fell+English:ital@0;1&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --noche:#050a1f; --azul-claro:#93b4ff;
+    --vino:#5a1523; --vino2:#35090f; --vino3:#7a2434;
+    --oro:#b98314; --oro-claro:#f3d77a; --oro-oscuro:#8a5f0c;
+    --papel:#f4e6c1; --papel2:#e8d4a0; --tinta:#3a2418; --tinta-suave:#6b4e34;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{font-family:'IM Fell English',Georgia,serif;background:var(--noche);color:#fff;overflow:hidden;height:100vh;height:100dvh;line-height:1.55}
+  #cielo{position:fixed;inset:0;z-index:0;width:100%;height:100%}
+  .vibes{font-family:'Great Vibes',cursive}
+  .dorado{background:linear-gradient(180deg,#fbeaa0,#d9a82e 55%,#f3d77a);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* ============ PUERTA SECRETA ============ */
+  #puerta{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;
+    background:rgba(8,3,8,.55);transition:opacity 1s, visibility 1s}
+  #puerta.fuera{opacity:0;visibility:hidden}
+  .candado{max-width:460px;width:100%;text-align:center;padding:38px 28px;border-radius:6px;
+    background:linear-gradient(160deg,var(--vino),var(--vino2));
+    border:3px double var(--oro-claro);box-shadow:0 0 0 6px rgba(53,9,15,.9),0 0 70px rgba(243,215,122,.18)}
+  .candado .icono{font-size:2.6rem}
+  .candado h2{font-family:'Cinzel Decorative',serif;color:var(--oro-claro);font-size:1.25rem;margin:10px 0 4px;letter-spacing:1px}
+  .candado .pregunta{font-family:'Great Vibes',cursive;font-size:2.1rem;line-height:1.2;margin:10px 0 18px;color:#fff3d1}
+  .candado input{width:100%;padding:12px 18px;border-radius:4px;border:2px solid rgba(243,215,122,.5);
+    background:rgba(255,248,225,.1);color:#fff8e1;font:400 1.15rem 'IM Fell English',serif;text-align:center;outline:none;transition:.3s}
+  .candado input:focus{border-color:var(--oro-claro);box-shadow:0 0 18px rgba(243,215,122,.35)}
+  .candado .pista{min-height:26px;margin-top:12px;font-size:1rem;font-style:italic;color:#e8c9a0}
+  .candado.error{animation:sacudir .45s}
+  .candado.error input{border-color:#ff6b7a}
+  @keyframes sacudir{0%,100%{transform:translateX(0)}20%{transform:translateX(-12px)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}80%{transform:translateX(8px)}}
+  .btn{padding:11px 28px;border:2px solid var(--oro-oscuro);border-radius:4px;cursor:pointer;font:400 1.05rem 'IM Fell English',serif;letter-spacing:1px;color:#2b1700;
+    background:linear-gradient(180deg,#fbeaa0,#d9a82e);box-shadow:0 3px 14px rgba(243,215,122,.3);transition:.25s}
+  .btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+
+  /* ============ ESCENA ============ */
+  #escena{position:relative;z-index:1;height:100vh;height:100dvh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:18px 12px 12px;gap:24px}
+  #escena.visible{display:flex;animation:entrar 1.2s}
+  @keyframes entrar{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+  .libro{position:relative;width:min(88vw,420px);height:min(74vh,640px);perspective:2400px}
+  .tapa-trasera{position:absolute;inset:-9px -10px -10px -8px;border-radius:5px 12px 12px 5px;z-index:0;
+    background:radial-gradient(ellipse at 30% 20%,var(--vino3),var(--vino2) 75%);
+    box-shadow:0 28px 60px rgba(0,0,0,.7),inset 0 0 0 2px rgba(243,215,122,.45),inset 0 0 0 6px var(--vino2),inset 0 0 0 7px rgba(243,215,122,.25)}
+  .canto{position:absolute;top:3px;bottom:3px;right:-7px;width:9px;z-index:1;border-radius:0 3px 3px 0;
+    background:repeating-linear-gradient(180deg,#f2e3b9 0 2px,#c4ab78 2px 3px)}
+  .marcador{position:absolute;right:58px;bottom:-40px;width:18px;height:78px;z-index:900;pointer-events:none;
+    background:linear-gradient(90deg,#8e1b2e,#c23049 50%,#8e1b2e);clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);
+    filter:drop-shadow(0 3px 3px rgba(0,0,0,.5))}
+
+  /* ------ Páginas ------ */
+  .pagina{position:absolute;inset:0;transform-origin:left center;transition:transform 1.05s cubic-bezier(.645,.045,.355,1);
+    backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:3px 9px 9px 3px;overflow:hidden;
+    background:
+      radial-gradient(circle at 80% 12%,rgba(160,110,50,.13),transparent 28%),
+      radial-gradient(circle at 12% 88%,rgba(160,110,50,.15),transparent 30%),
+      linear-gradient(90deg,#d9c590 0,var(--papel) 8%,var(--papel) 92%,var(--papel2) 100%);
+    color:var(--tinta);box-shadow:inset 10px 0 16px -8px rgba(80,45,10,.5),inset 0 0 55px rgba(139,90,43,.28)}
+  .pagina.volteada{transform:rotateY(-179deg)}
+  .pagina::before{content:"";position:absolute;inset:11px 11px 11px 17px;border:3px double rgba(138,95,12,.5);pointer-events:none;z-index:2}
+  .pagina .contenido{position:relative;height:100%;overflow-y:auto;padding:32px 30px 48px 36px;display:flex;flex-direction:column}
+  .pagina .contenido::-webkit-scrollbar{width:0}
+  .pagina .nump{position:absolute;bottom:17px;left:0;right:0;text-align:center;font-family:'Cinzel Decorative',serif;font-size:.78rem;color:var(--oro-oscuro);z-index:3;pointer-events:none}
+  .pagina h2{font-family:'Cinzel Decorative',serif;font-weight:700;color:var(--vino);font-size:1.15rem;text-align:center;line-height:1.35;letter-spacing:.5px}
+  .pagina h2::after{content:"❦";display:block;margin-top:6px;font-size:1.3rem;color:var(--oro);font-family:serif;font-weight:400}
+  .pagina .sub{text-align:center;font-size:1rem;font-style:italic;margin:6px 0 16px;color:var(--tinta-suave)}
+  .centro{margin:auto 0}
+
+  /* ------ Portada victoriana ------ */
+  .pagina.tapa{
+    background:
+      radial-gradient(ellipse at 28% 18%,rgba(190,70,90,.55),transparent 55%),
+      repeating-linear-gradient(45deg,rgba(0,0,0,.10) 0 2px,transparent 2px 5px),
+      repeating-linear-gradient(-45deg,rgba(0,0,0,.07) 0 2px,transparent 2px 5px),
+      linear-gradient(135deg,#6b1b2b,#3a0a14);
+    color:var(--oro-claro);border-radius:4px 12px 12px 4px;
+    box-shadow:inset 0 0 0 2px rgba(243,215,122,.7),inset 0 0 0 8px #3a0a14,inset 0 0 0 9px rgba(243,215,122,.45),inset 12px 0 18px -6px rgba(0,0,0,.65)}
+  .pagina.tapa::before{inset:20px 20px 20px 26px;border:2px solid rgba(243,215,122,.65);box-shadow:inset 0 0 0 5px transparent,inset 0 0 0 6px rgba(243,215,122,.35)}
+  .tapa .contenido{align-items:center;justify-content:center;text-align:center;padding:44px 34px}
+  .esq{position:absolute;font-size:1.5rem;color:var(--oro-claro);z-index:3;line-height:1;font-family:serif}
+  .esq.a{top:26px;left:34px}.esq.b{top:26px;right:28px;transform:scaleX(-1)}
+  .esq.c{bottom:26px;left:34px;transform:scaleY(-1)}.esq.d{bottom:26px;right:28px;transform:scale(-1,-1)}
+  .tapa .sobre{font-family:'Cinzel Decorative',serif;letter-spacing:4px;font-size:.62rem;color:#e8c9a0}
+  .medallon{width:84px;height:104px;margin:14px auto 10px;border-radius:50%;border:2px solid var(--oro-claro);
+    box-shadow:0 0 0 4px #3a0a14,0 0 0 5px rgba(243,215,122,.6),inset 0 0 18px rgba(0,0,0,.5);
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 35% 30%,#7a2434,#3a0a14);font-family:'Cinzel Decorative',serif;font-size:1.5rem}
+  .tapa h1{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(1.9rem,9vw,2.6rem);line-height:1.15;margin:8px 0}
+  .tapa .orn{color:var(--oro-claro);letter-spacing:8px;font-size:1rem;margin:4px 0}
+  .tapa .nombres{font-family:'Great Vibes',cursive;font-size:2.4rem;line-height:1.1;margin-top:6px}
+  .tapa .anios{font-family:'Cinzel Decorative',serif;font-size:.7rem;letter-spacing:4px;color:#e8c9a0;margin-top:14px}
+  .tapa .abrir{margin-top:20px;font-size:.9rem;font-style:italic;color:#e8c9a0;animation:pulso 2.4s infinite}
+  @keyframes pulso{0%,100%{opacity:.4}50%{opacity:1}}
+
+  /* ------ Dedicatoria ------ */
+  .dedic .l1{font-family:'Great Vibes',cursive;font-size:2.2rem;text-align:center;line-height:1.2;color:var(--vino)}
+  .dedic .l2{margin-top:6px;text-align:center;font-style:italic;font-size:1.05rem;color:var(--tinta-suave)}
+  .dedic blockquote{margin-top:26px;font-family:'Great Vibes',cursive;font-size:2.15rem;line-height:1.3;text-align:center;color:var(--tinta)}
+  .dedic blockquote em{font-style:normal;color:var(--vino3)}
+  .dedic .orn{text-align:center;color:var(--oro);font-size:1.4rem;margin-top:18px}
+
+  /* ------ Contadores ------ */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .caja{text-align:center;padding:15px 6px;border-radius:3px;background:linear-gradient(160deg,var(--vino),var(--vino2));
+    border:2px solid var(--oro);box-shadow:0 0 0 3px var(--papel),0 0 0 4px rgba(138,95,12,.5),0 5px 12px rgba(53,9,15,.3)}
+  .caja b{display:block;font-family:'Playfair Display',serif;font-size:2rem;color:var(--oro-claro);line-height:1.1}
+  .caja span{font-family:'Cinzel Decorative',serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#e8c9a0}
+  .nota{margin-top:20px;text-align:center;font-style:italic;font-size:1.1rem;color:var(--tinta-suave)}
+  #hoyEsElDia{display:none;text-align:center}
+  #hoyEsElDia h3{font-family:'Great Vibes',cursive;font-size:2.4rem;color:var(--vino);line-height:1.2;font-weight:400}
+  #hoyEsElDia .btn{margin-top:16px}
+
+  /* ------ Carta ------ */
+  .carta-txt{font-size:1.14rem;line-height:1.6;white-space:pre-line;color:var(--tinta);font-style:italic}
+  .carta-txt::first-letter{font-family:'Cinzel Decorative',serif;font-style:normal;font-weight:700;font-size:2.8rem;float:left;line-height:.9;padding:4px 8px 0 0;color:var(--vino)}
+  .carta-txt.sin::first-letter{all:unset}
+  .firma{margin-top:14px;font-family:'Great Vibes',cursive;font-size:2rem;color:var(--vino);text-align:right}
+
+  /* ------ Línea de tiempo ------ */
+  .hitos{position:relative;margin-left:8px}
+  .hitos::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--oro),var(--vino3))}
+  .hito{position:relative;padding:0 0 16px 30px}
+  .hito::before{content:"❦";position:absolute;left:-3px;top:-3px;color:var(--oro);font-size:1.1rem;background:var(--papel);line-height:1.2;font-family:serif}
+  .hito h3{font-family:'Cinzel Decorative',serif;color:var(--vino);font-size:.88rem;letter-spacing:.3px}
+  .hito p{font-size:1rem;color:var(--tinta-suave);line-height:1.4;font-style:italic}
+
+  /* ------ Constelación ------ */
+  .zona{position:relative;width:100%;aspect-ratio:1/1;border-radius:4px;border:3px double var(--oro);
+    background:radial-gradient(circle at 50% 50%,#1d3a8f,#0a1640 78%);box-shadow:inset 0 0 40px rgba(0,0,0,.6)}
+  .zona svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .zona svg line{stroke:var(--oro-claro);stroke-width:.7;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset 1.1s ease;filter:drop-shadow(0 0 1px var(--oro-claro))}
+  .zona svg line.on{stroke-dashoffset:0}
+  .estrella{position:absolute;transform:translate(-50%,-50%);width:36px;height:36px;border:none;background:none;cursor:pointer;
+    font-size:1.5rem;line-height:1;color:var(--azul-claro);animation:titilar 2.6s infinite;transition:.25s}
+  .estrella::before{content:"✦"}
+  .estrella.vista{color:var(--oro-claro);text-shadow:0 0 14px var(--oro-claro);animation:none}
+  .estrella.vista::before{content:"★"}
+  @keyframes titilar{0%,100%{opacity:.5}50%{opacity:1}}
+  .progreso{text-align:center;margin-top:10px;font-size:1rem;font-style:italic;color:var(--tinta-suave)}
+  .progreso b{color:var(--vino);font-size:1.2rem;font-style:normal}
+  #mensajeConst{display:none;margin-top:10px;text-align:center;font-family:'Great Vibes',cursive;font-size:1.8rem;line-height:1.25;color:var(--vino);white-space:pre-line}
+  #mensajeConst.on{display:block;animation:entrar 1.2s}
+
+  /* ------ Constelaciones zodiacales ------ */
+  .zona svg .zod line{stroke:rgba(147,180,255,.5);stroke-width:.35;stroke-dasharray:none;stroke-dashoffset:0;filter:none;transition:stroke 1.2s}
+  .zona svg .zod circle{fill:#cfe0ff;opacity:.65;transition:fill 1.2s,opacity 1.2s}
+  .zona svg .zod text{fill:#9fb7ff;opacity:.6;font-family:'IM Fell English',serif;font-style:italic;transition:fill 1.2s,opacity 1.2s}
+  .zona svg .zod.on line{stroke:var(--oro-claro);stroke-width:.5;filter:drop-shadow(0 0 .8px var(--oro-claro))}
+  .zona svg .zod.on circle{fill:var(--oro-claro);opacity:1;filter:drop-shadow(0 0 1.2px var(--oro-claro))}
+  .zona svg .zod.on text{fill:var(--oro-claro);opacity:1}
+  .zona svg line.union{stroke:var(--oro-claro);stroke-width:.35;stroke-dasharray:1 1.2;stroke-dashoffset:0;opacity:0;transition:opacity 1.6s;filter:none}
+  .zona svg line.union.on{opacity:.9}
+
+  /* ------ Final ------ */
+  .final h2::after{display:none}
+  .final .grande{font-family:'Great Vibes',cursive;font-size:2.9rem;line-height:1.1;text-align:center;color:var(--vino)}
+  .final .corazon{font-size:3.4rem;text-align:center;margin:10px 0;animation:latido 1.5s infinite}
+  .final p.c{text-align:center;font-style:italic;font-size:1.1rem;color:var(--tinta)}
+  .final .fecha{text-align:center;font-family:'Cinzel Decorative',serif;font-size:.7rem;letter-spacing:3px;color:var(--oro-oscuro);margin-top:12px}
+  .final .btn{align-self:center;margin-top:14px}
+  @keyframes latido{0%,100%{transform:scale(1)}15%{transform:scale(1.16)}30%{transform:scale(1)}45%{transform:scale(1.1)}}
+
+  /* ============ NAVEGACIÓN ============ */
+  .nav{display:flex;align-items:center;gap:16px;z-index:5}
+  .nav button{width:46px;height:46px;border-radius:50%;border:2px solid var(--oro-claro);background:linear-gradient(160deg,var(--vino),var(--vino2));
+    color:var(--oro-claro);font-size:1.5rem;cursor:pointer;transition:.25s;line-height:1;font-family:serif}
+  .nav button:hover:not(:disabled){transform:scale(1.1)}
+  .nav button:disabled{opacity:.25;cursor:default}
+  #indicador{min-width:120px;text-align:center;font-family:'Cinzel Decorative',serif;font-size:.72rem;letter-spacing:2px;color:var(--oro-claro)}
+
+  /* ============ RAZÓN (modal) ============ */
+  #razon{position:fixed;inset:0;z-index:140;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(10,3,6,.8)}
+  #razon.on{display:flex;animation:entrar .35s}
+  #razon .tarjeta{max-width:400px;width:100%;text-align:center;padding:36px 26px;border-radius:4px;
+    background:var(--papel);color:var(--tinta);border:4px double var(--oro);box-shadow:0 0 60px rgba(243,215,122,.25)}
+  #razon .num{font-family:'Cinzel Decorative',serif;font-size:.7rem;letter-spacing:4px;color:var(--oro-oscuro)}
+  #razon .texto{font-family:'Great Vibes',cursive;font-size:2.2rem;line-height:1.25;margin:12px 0 20px;color:var(--vino)}
+
+  /* ============ SORPRESA A LAS 00:00 ============ */
+  #sorpresa{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px;
+    background:radial-gradient(circle at 50% 40%,rgba(90,21,35,.92),rgba(12,3,7,.96))}
+  #sorpresa.on{display:flex;animation:entrar .8s}
+  #selloVista{flex-direction:column;align-items:center;text-align:center;display:flex}
+  #selloVista .tit{font-family:'Cinzel Decorative',serif;color:var(--oro-claro);letter-spacing:4px;font-size:.85rem;margin-bottom:6px}
+  #selloVista .hora{font-family:'Great Vibes',cursive;font-size:2.4rem;color:#fff3d1;margin-bottom:26px}
+  #sello{width:150px;height:150px;border:none;cursor:pointer;color:rgba(255,226,160,.92);font-size:4.2rem;font-family:serif;
+    border-radius:47% 53% 50% 50% / 52% 48% 52% 48%;
+    background:radial-gradient(circle at 35% 28%,#e0566a,#a01a30 55%,#5c0b19);
+    box-shadow:0 10px 40px rgba(0,0,0,.6),inset 0 0 0 6px rgba(120,10,30,.7),inset 0 -8px 14px rgba(0,0,0,.35);
+    animation:latido 1.8s infinite;transition:.7s}
+  #sello.roto{transform:scale(1.6) rotate(25deg);opacity:0;animation:none}
+  #selloVista .hint{margin-top:26px;font-style:italic;color:#e8c9a0;animation:pulso 2s infinite}
+  #cartaVista{display:none;max-height:90vh;width:min(94vw,470px);overflow-y:auto;padding:34px 30px 30px;border-radius:4px;
+    background:radial-gradient(circle at 80% 10%,rgba(160,110,50,.15),transparent 30%),linear-gradient(180deg,var(--papel),var(--papel2));
+    color:var(--tinta);border:4px double var(--oro);box-shadow:0 0 90px rgba(243,215,122,.3)}
+  #cartaVista.on{display:block;animation:desplegar 1.3s cubic-bezier(.2,.8,.2,1)}
+  @keyframes desplegar{from{opacity:0;transform:scale(.6) rotate(-4deg)}to{opacity:1;transform:none}}
+  #cartaVista .felicidades{font-family:'Cinzel Decorative',serif;text-align:center;font-weight:700;font-size:1.15rem;letter-spacing:2px;color:var(--vino)}
+  #cartaVista .orn{text-align:center;color:var(--oro);font-size:1.3rem;margin:4px 0 12px}
+  #cartaVista .saludo{font-family:'Great Vibes',cursive;font-size:2.3rem;color:var(--vino);line-height:1.1}
+  #cartaVista p.t{font-size:1.15rem;font-style:italic;line-height:1.6;margin-top:12px}
+  #cartaVista p.t:first-of-type::first-letter{font-family:'Cinzel Decorative',serif;font-style:normal;font-weight:700;font-size:2.7rem;float:left;line-height:.9;padding:4px 8px 0 0;color:var(--vino)}
+  #cartaVista .vale{margin:20px 0 4px;padding:14px;text-align:center;border:2px dashed var(--oro-oscuro);background:rgba(255,248,225,.55)}
+  #cartaVista .vale b{display:block;font-family:'Cinzel Decorative',serif;font-size:.8rem;letter-spacing:3px;color:var(--oro-oscuro)}
+  #cartaVista .vale span{font-family:'Great Vibes',cursive;font-size:1.7rem;color:var(--vino);line-height:1.2}
+  #cartaVista .firma{margin-top:14px}
+  #cartaVista .btn{display:block;margin:14px auto 0}
+
+  .flotante{position:fixed;bottom:-40px;z-index:250;pointer-events:none;animation:subir linear forwards}
+  @keyframes subir{to{transform:translateY(-115vh) rotate(30deg);opacity:0}}
+
+</style>
+</head>
+
+<body>
+<canvas id="cielo"></canvas>
+
+<!-- ================= PUERTA SECRETA ================= -->
+<div id="puerta">
+  <div class="candado" id="candado">
+    <div class="icono">🗝️</div>
+    <h2>Este libro es solo para ti</h2>
+    <p class="pregunta" id="preguntaTxt"></p>
+    <input id="respuesta" type="text" placeholder="Escribe tu respuesta…" autocomplete="off" autocapitalize="off">
+    <div class="pista" id="pista"></div>
+    <button class="btn" id="btnAbrir" style="margin-top:12px">Abrir ❦</button>
+  </div>
+</div>
+
+<!-- ================= EL LIBRO ================= -->
+<main id="escena">
+  <div class="libro" id="libro">
+    <div class="tapa-trasera"></div>
+    <div class="canto"></div>
+    <div class="marcador"></div>
+
+    <!-- PORTADA -->
+    <article class="pagina tapa">
+      <span class="esq a">❧</span><span class="esq b">❧</span><span class="esq c">❧</span><span class="esq d">❧</span>
+      <div class="contenido">
+        <p class="sobre">CRÓNICA DE UN GRAN AMOR</p>
+        <div class="medallon"><span class="dorado" id="monograma">A&V</span></div>
+        <h1 class="dorado">Dos Años<br>de Amor</h1>
+        <p class="orn">— ❦ —</p>
+        <p class="nombres dorado" id="nombres"></p>
+        <p class="anios">MMXXIV · MMXXVI</p>
+        <p class="abrir">Desliza para abrir ›</p>
+      </div>
+    </article>
+
+    <!-- I · DEDICATORIA -->
+    <article class="pagina">
+      <div class="contenido dedic">
+        <div class="centro">
+          <p class="l1" id="dedicatoria"></p>
+          <p class="l2">con todo mi cariño</p>
+          <div class="orn">❦</div>
+          <blockquote>“Y si vivimos <em>mil vidas</em>,<br>en cada una te amaría más.”</blockquote>
+        </div>
+      </div>
+      <div class="nump">I</div>
+    </article>
+
+    <!-- II · CUENTA REGRESIVA -->
+    <article class="pagina">
+      <div class="contenido">
+        <h2>Cuenta regresiva a nuestro aniversario</h2>
+        <p class="sub" id="subAniv"></p>
+        <div class="centro">
+          <div class="grid" id="cuentaAtras">
+            <div class="caja"><b id="r-dias">0</b><span>Días</span></div>
+            <div class="caja"><b id="r-horas">0</b><span>Horas</span></div>
+            <div class="caja"><b id="r-min">0</b><span>Minutos</span></div>
+            <div class="caja"><b id="r-seg">0</b><span>Segundos</span></div>
+          </div>
+          <p class="nota" id="notaSorpresa">Cuando el reloj llegue a cero,<br>una sorpresa sellada se abrirá para ti… 💌</p>
+          <div id="hoyEsElDia">
+            <h3>¡Hoy es nuestro aniversario!</h3>
+            <p class="nota">Dos años juntos y mi corazón sigue siendo tuyo.</p>
+            <button class="btn" id="btnSorpresa">Abrir mi sorpresa 💌</button>
+          </div>
+        </div>
+      </div>
+      <div class="nump">II</div>
+    </article>
+
+    <!-- III · TIEMPO JUNTOS -->
+    <article class="pagina">
+      <div class="contenido">
+        <h2>Cada instante contigo cuenta</h2>
+        <p class="sub">Esto es lo que llevamos escribiendo juntos…</p>
+        <div class="centro">
+          <div class="grid">
+            <div class="caja"><b id="c-dias">0</b><span>Días</span></div>
+            <div class="caja"><b id="c-horas">0</b><span>Horas</span></div>
+            <div class="caja"><b id="c-min">0</b><span>Minutos</span></div>
+            <div class="caja"><b id="c-seg">0</b><span>Segundos</span></div>
+          </div>
+          <p class="nota">y los que aún nos faltan por vivir ❦</p>
+        </div>
+      </div>
+      <div class="nump">III</div>
+    </article>
+
+    <!-- IV · CARTA 1 -->
+    <article class="pagina">
+      <div class="contenido">
+        <h2>Una carta para ti</h2>
+        <p class="sub">Lo que mi corazón quiere decirte hoy</p>
+        <div class="carta-txt" id="carta1"></div>
+      </div>
+      <div class="nump">IV</div>
+    </article>
+
+    <!-- V · CARTA 2 -->
+    <article class="pagina">
+      <div class="contenido">
+        <div class="centro">
+          <div class="carta-txt sin" id="carta2"></div>
+          <div class="firma" id="firma"></div>
+        </div>
+      </div>
+      <div class="nump">V</div>
+    </article>
+
+    <!-- VI · LÍNEA DE TIEMPO -->
+    <article class="pagina">
+      <div class="contenido">
+        <h2>Nuestro camino</h2>
+        <p class="sub">Los momentos que nos trajeron hasta aquí</p>
+        <div class="hitos">
+          <!-- ✏️ Cambia estos textos por sus recuerdos reales -->
+          <div class="hito"><h3>El comienzo</h3><p>Dos caminos que se cruzaron y, sin saberlo, empezaron a ser uno solo.</p></div>
+          <div class="hito"><h3>Nuestro primer “te quiero”</h3><p>Tres palabras pequeñas que cambiaron todo para siempre.</p></div>
+          <div class="hito"><h3>Un año juntos</h3><p>Aprendimos a querernos en los días buenos y a sostenernos en los difíciles.</p></div>
+          <div class="hito"><h3>Hoy: dos años</h3><p>Y lo mejor es que apenas estamos empezando.</p></div>
+        </div>
+      </div>
+      <div class="nump">VI</div>
+    </article>
+
+    <!-- VII · CONSTELACIÓN -->
+    <article class="pagina">
+      <div class="contenido">
+        <h2>Nuestra constelación</h2>
+        <p class="sub">Toca las 12 estrellas del corazón. Libra y Capricornio, nuestros signos, también nos esperan en el cielo</p>
+        <div class="zona" id="zona"><svg viewBox="0 0 100 100" id="lineas"></svg></div>
+        <p class="progreso">Descubiertas: <b id="contadorEstrellas">0</b> de <span id="totalEstrellas">12</span></p>
+        <div id="mensajeConst"></div>
+      </div>
+      <div class="nump">VII</div>
+    </article>
+
+    <!-- VIII · FINAL -->
+    <article class="pagina final">
+      <div class="contenido">
+        <div class="centro">
+          <div class="grande">Te amo hoy,<br>mañana<br>y siempre</div>
+          <div class="corazon">❤️</div>
+          <p class="c">Gracias por estos dos años.<br>Esto no es el final: es apenas el segundo capítulo.</p>
+          <p class="fecha" id="firmaFecha"></p>
+          <button class="btn" id="btnInicio">Volver a la portada</button>
+        </div>
+      </div>
+      <div class="nump">VIII</div>
+    </article>
+  </div>
+
+  <div class="nav">
+    <button id="btnPrev" aria-label="Página anterior">‹</button>
+    <div id="indicador"></div>
+    <button id="btnNext" aria-label="Página siguiente">›</button>
+  </div>
+</main>
+
+<!-- ================= RAZÓN ================= -->
+<div id="razon">
+  <div class="tarjeta">
+    <div class="num" id="razonNum"></div>
+    <div class="texto" id="razonTexto"></div>
+    <button class="btn" id="razonCerrar">Guardar en mi corazón</button>
+  </div>
+</div>
+
+<!-- ================= SORPRESA (cuando la cuenta llega a 0) ================= -->
+<div id="sorpresa">
+  <div id="selloVista">
+    <div class="tit">UN SELLO ROMPERÁS</div>
+    <div class="hora">Ha llegado la medianoche…</div>
+    <button id="sello" aria-label="Romper el sello">❦</button>
+    <div class="hint">Toca el sello para abrir tu carta</div>
+  </div>
+  <div id="cartaVista">
+    <div class="felicidades">¡FELIZ ANIVERSARIO!</div>
+    <div class="orn">— ❦ —</div>
+    <div class="saludo" id="sorpSaludo"></div>
+    <div id="sorpTexto"></div>
+    <div class="vale"><b>VALE POR</b><span id="sorpVale"></span></div>
+    <div class="firma" id="sorpFirma"></div>
+    <button class="btn" id="cerrarSorpresa">Guardar esta carta ❦</button>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   ✏️  CONFIGURACIÓN — CAMBIA SOLO ESTO
+   ================================================================ */
+const CONFIG = {
+  tuNombre: "Anghelo",
+  suNombre: "Valeria",
+
+  aniversarioMes: 11,
+  aniversarioDia: 6,
+  inicio: "2024-11-06T00:00:00",
+
+  pregunta: "¿Cuál es la forma más bonita en la que te digo?",
+  pista: "Es tu apodo cariñoso 🐰 (empieza con C)",
+  respuestaCodificada: btoa("conejita"),
+
+  cartaPagina1:
+`Mi querida Valeria:
+
+Hace dos años, mi vida cambió de color. Antes veía el cielo y solo eran estrellas; contigo aprendí que pueden bailar, girar y brillar como en una pintura.
+
+Gracias por quedarte en mis días grises, por reír de mis locuras, por abrazarme sin pedir nada a cambio y por hacerme creer que el amor de verdad existe.`,
+  cartaPagina2:
+`Contigo cualquier lugar es hogar, y cualquier momento, el mejor de mi vida.
+
+Si pudiera volver a empezar mil veces, te elegiría mil veces más.
+
+Feliz aniversario, mi conejita.`,
+  firma: "Tuyo siempre, Anghelo",
+
+  razones: [
+    "Por tu sonrisa, que ilumina hasta mis días más oscuros.",
+    "Por la forma en que me escuchas, incluso cuando no digo nada.",
+    "Por hacerme reír cuando menos lo espero.",
+    "Por tu paciencia conmigo, aun cuando no es fácil.",
+    "Por abrazarme como si el mundo se detuviera.",
+    "Por ser mi lugar seguro, mi hogar.",
+    "Por creer en mí incluso cuando yo dudo.",
+    "Por cada mensaje, cada llamada y cada “ya llegué”.",
+    "Por todo lo que hemos aprendido juntos en dos años.",
+    "Por los sueños que ahora tenemos en plural.",
+    "Por ser tú, exactamente tú, sin cambiar nada.",
+    "Porque contigo el “para siempre” no me da miedo."
+  ],
+  mensajeFinal: "Libra y Capricornio,\ndos cielos distintos unidos por un solo corazón.\nTe amo, Valeria.",
+
+  // 💌 SORPRESA que se abre cuando la cuenta regresiva llega a cero
+  sorpresa: {
+    saludo: "Mi amada Valeria:",
+    parrafos: [
+      "Hoy, 6 de noviembre, se cumplen dos años desde que decidimos escribir esta historia juntos. Dos años de risas, de abrazos y de aprender a querernos un poco más cada día.",
+      "No tengo palabras suficientes para agradecerte, pero sí una promesa: seguir eligiéndote en cada amanecer, en cada tormenta y en cada vida que nos toque vivir.",
+      "Feliz segundo aniversario, mi conejita. Te amo con todo mi corazón."
+    ],
+    vale: "Una cita de ensueño, a la hora y en el lugar que tú elijas 🌙",
+    firma: "Tuyo siempre, Anghelo"
+  }
+};
+
+const $ = id => document.getElementById(id);
+// Para probar la sorpresa sin esperar: abre la página con  ?sorpresa  al final de la dirección
+const FORZAR = /sorpresa/.test(location.search);
+
+/* ================================================================
+   CIELO ESTRELLADO (suave)
+   ================================================================ */
+const canvas = $("cielo"), ctx = canvas.getContext("2d");
+let W, H, remolinos = [], estrellitas = [], t = 0;
+function ajustar(){
+  W = canvas.width = innerWidth; H = canvas.height = innerHeight;
+  const n = Math.max(3, Math.round(W/420));
+  remolinos = Array.from({length:n}, () => ({
+    x:Math.random()*W, y:Math.random()*H, r:60+Math.random()*80,
+    v:(Math.random()*.25+.1)*(Math.random()<.5?-1:1), fase:Math.random()*6.28
+  }));
+  estrellitas = Array.from({length:Math.round(W/14)}, () => ({x:Math.random()*W,y:Math.random()*H,z:Math.random()*1.8+.4,f:Math.random()*6.28}));
+}
+addEventListener("resize", ajustar); ajustar();
+(function dibujar(){
+  t += .006;
+  const g = ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,"#030716"); g.addColorStop(.6,"#07123a"); g.addColorStop(1,"#0b1d5c");
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+  remolinos.forEach(o => {
+    for(let i=0;i<4;i++){
+      ctx.beginPath();
+      const rr = o.r*(1-i*.2);
+      for(let a=0;a<Math.PI*3;a+=.14){
+        const rad = rr*(a/(Math.PI*3)), ang = a*o.v*2 + t*o.v*3 + o.fase;
+        const px = o.x+Math.cos(ang)*rad, py = o.y+Math.sin(ang)*rad;
+        a===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+      }
+      ctx.strokeStyle = i%2 ? "rgba(147,180,255,.12)" : "rgba(29,78,216,.22)";
+      ctx.lineWidth = 2.6-i*.5; ctx.stroke();
+    }
+    const rg = ctx.createRadialGradient(o.x,o.y,0,o.x,o.y,36);
+    rg.addColorStop(0,"rgba(255,230,120,.8)"); rg.addColorStop(.4,"rgba(255,200,60,.25)"); rg.addColorStop(1,"rgba(255,200,60,0)");
+    ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(o.x,o.y,36,0,6.28); ctx.fill();
+  });
+  estrellitas.forEach(p => {
+    ctx.fillStyle = `rgba(255,236,160,${.3+Math.abs(Math.sin(t*3+p.f))*.6})`;
+    ctx.fillRect(p.x,p.y,p.z,p.z);
+  });
+  requestAnimationFrame(dibujar);
+})();
+
+/* ================================================================
+   CONTADORES + SORPRESA
+   ================================================================ */
+function proximoAniversario(){
+  const ahora = new Date(), y = ahora.getFullYear();
+  const dia = new Date(y, CONFIG.aniversarioMes-1, CONFIG.aniversarioDia);
+  const finDia = new Date(y, CONFIG.aniversarioMes-1, CONFIG.aniversarioDia+1);
+  if(FORZAR || (ahora >= dia && ahora < finDia)) return {hoy:true, fecha:dia};
+  if(ahora < dia) return {hoy:false, fecha:dia};
+  return {hoy:false, fecha:new Date(y+1, CONFIG.aniversarioMes-1, CONFIG.aniversarioDia)};
+}
+let sorpresaMostrada = false, desbloqueado = false;
+function actualizar(){
+  const s = Math.floor((Date.now()-new Date(CONFIG.inicio).getTime())/1000);
+  $("c-dias").textContent  = Math.max(0,Math.floor(s/86400)).toLocaleString("es");
+  $("c-horas").textContent = Math.max(0,Math.floor(s%86400/3600));
+  $("c-min").textContent   = Math.max(0,Math.floor(s%3600/60));
+  $("c-seg").textContent   = Math.max(0,s%60);
+
+  const p = proximoAniversario();
+  if(p.hoy){
+    $("cuentaAtras").style.display = "none"; $("notaSorpresa").style.display = "none";
+    $("hoyEsElDia").style.display = "block";
+    $("subAniv").textContent = "Este es nuestro día";
+    if(desbloqueado && !sorpresaMostrada) abrirSorpresa();
+  } else {
+    $("cuentaAtras").style.display = ""; $("notaSorpresa").style.display = "";
+    $("hoyEsElDia").style.display = "none";
+    const r = Math.max(0, Math.floor((p.fecha - Date.now())/1000));
+    $("r-dias").textContent  = Math.floor(r/86400);
+    $("r-horas").textContent = Math.floor(r%86400/3600);
+    $("r-min").textContent   = Math.floor(r%3600/60);
+    $("r-seg").textContent   = r%60;
+    const años = p.fecha.getFullYear() - new Date(CONFIG.inicio).getFullYear();
+    $("subAniv").textContent = `Falta muy poco para celebrar nuestros ${años} años…`;
+  }
+}
+actualizar(); setInterval(actualizar, 1000);
+
+/* Sorpresa sellada */
+(function armarSorpresa(){
+  const S = CONFIG.sorpresa;
+  $("sorpSaludo").textContent = S.saludo;
+  $("sorpTexto").innerHTML = S.parrafos.map(x => `<p class="t"></p>`).join("");
+  [...$("sorpTexto").children].forEach((el,i) => el.textContent = S.parrafos[i]);
+  $("sorpVale").textContent = S.vale;
+  $("sorpFirma").textContent = "— " + S.firma;
+})();
+function abrirSorpresa(){
+  sorpresaMostrada = true;
+  $("sello").classList.remove("roto");
+  $("selloVista").style.display = "flex";
+  $("cartaVista").classList.remove("on");
+  $("sorpresa").classList.add("on");
+}
+$("sello").addEventListener("click", () => {
+  $("sello").classList.add("roto"); lluvia(45);
+  setTimeout(() => { $("selloVista").style.display = "none"; $("cartaVista").classList.add("on"); }, 750);
+});
+$("cerrarSorpresa").addEventListener("click", () => $("sorpresa").classList.remove("on"));
+$("btnSorpresa").addEventListener("click", abrirSorpresa);
+
+/* ================================================================
+   TEXTOS
+   ================================================================ */
+$("preguntaTxt").textContent = CONFIG.pregunta;
+$("nombres").textContent = `${CONFIG.tuNombre} & ${CONFIG.suNombre}`;
+$("monograma").textContent = `${CONFIG.tuNombre[0]}&${CONFIG.suNombre[0]}`;
+$("dedicatoria").innerHTML = `Este libro es para ti,<br>${CONFIG.suNombre}`;
+$("carta1").textContent = CONFIG.cartaPagina1;
+$("carta2").textContent = CONFIG.cartaPagina2;
+$("firma").textContent = "— " + CONFIG.firma;
+$("firmaFecha").textContent = `${CONFIG.tuNombre.toUpperCase()} & ${CONFIG.suNombre.toUpperCase()} · VI · XI · MMXXIV`;
+
+/* ================================================================
+   PREGUNTA SECRETA
+   ================================================================ */
+const normalizar = s => s.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
+let intentos = 0;
+function intentar(){
+  if(btoa(normalizar($("respuesta").value)) === CONFIG.respuestaCodificada){
+    $("puerta").classList.add("fuera");
+    $("escena").classList.add("visible");
+    desbloqueado = true;
+    crearConstelacion(); aplicarZ(); actualizarNav(); actualizar();
+  } else {
+    intentos++;
+    const c = $("candado"); c.classList.remove("error"); void c.offsetWidth; c.classList.add("error");
+    $("pista").textContent = intentos >= 2 ? CONFIG.pista : "Mmm… intenta de nuevo 💭";
+  }
+}
+$("btnAbrir").addEventListener("click", intentar);
+$("respuesta").addEventListener("keydown", e => e.key === "Enter" && intentar());
+
+/* ================================================================
+   📖 LIBRO: pasar páginas
+   ================================================================ */
+const paginas = [...document.querySelectorAll(".pagina")], total = paginas.length;
+let actual = 0;
+function aplicarZ(){ paginas.forEach((p,k) => p.style.zIndex = k < actual ? k+1 : 100 + total - k); }
+function actualizarNav(){
+  $("btnPrev").disabled = actual === 0;
+  $("btnNext").disabled = actual >= total-1;
+  $("indicador").textContent = actual === 0 ? "PORTADA" : `PÁGINA ${actual} DE ${total-1}`;
+}
+function pasar(d){
+  if(d > 0 && actual < total-1){
+    const p = paginas[actual]; p.style.zIndex = 500;
+    p.classList.add("volteada"); actual++; setTimeout(aplicarZ, 1050);
+  } else if(d < 0 && actual > 0){
+    actual--; const p = paginas[actual]; p.style.zIndex = 500;
+    p.classList.remove("volteada"); setTimeout(aplicarZ, 1050);
+  } else return;
+  actualizarNav();
+}
+function irA(n){ (function paso(){ if(actual === n) return; pasar(n > actual ? 1 : -1); setTimeout(paso, 230); })(); }
+$("btnNext").addEventListener("click", () => pasar(1));
+$("btnPrev").addEventListener("click", () => pasar(-1));
+$("btnInicio").addEventListener("click", () => irA(0));
+addEventListener("keydown", e => {
+  if(!desbloqueado) return;
+  if(e.key === "ArrowRight") pasar(1);
+  if(e.key === "ArrowLeft") pasar(-1);
+});
+let x0 = null, y0 = null;
+$("libro").addEventListener("touchstart", e => {
+  if(e.target.closest(".zona")){ x0 = null; return; }
+  x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+}, {passive:true});
+$("libro").addEventListener("touchend", e => {
+  if(x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+  if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) pasar(dx < 0 ? 1 : -1);
+  x0 = null;
+}, {passive:true});
+paginas[0].addEventListener("click", () => { if(actual === 0) pasar(1); });
+
+/* ================================================================
+   PÉTALOS / CORAZONES (solo en momentos especiales)
+   ================================================================ */
+function lluvia(cantidad = 20){
+  const emojis = ["💛","❤️","✨","🌹","🐰"];
+  for(let i=0;i<cantidad;i++){
+    setTimeout(() => {
+      const s = document.createElement("span");
+      s.className = "flotante";
+      s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      s.style.left = Math.random()*100+"vw";
+      s.style.fontSize = (16+Math.random()*26)+"px";
+      s.style.animationDuration = (4+Math.random()*3)+"s";
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 7500);
+    }, i*130);
+  }
+}
+
+/* ================================================================
+   ⭐ CONSTELACIÓN DE RAZONES
+   ================================================================ */
+let vistas = new Set(), estrellas = [], segmentos = [];
+function crearConstelacion(){
+  const zona = $("zona"), svg = $("lineas"), N = CONFIG.razones.length, puntos = [];
+  $("totalEstrellas").textContent = N;
+  for(let i=0;i<N;i++){
+    const a = (i/N)*Math.PI*2 + Math.PI;
+    const x = 16*Math.pow(Math.sin(a),3);
+    const y = 13*Math.cos(a)-5*Math.cos(2*a)-2*Math.cos(3*a)-Math.cos(4*a);
+    puntos.push({x:50 + x*2.15, y:55 - y*2.15});
+  }
+  const NS = "http://www.w3.org/2000/svg";
+  for(let i=0;i<N;i++){
+    const p = puntos[i], q = puntos[(i+1)%N], l = document.createElementNS(NS,"line");
+    l.setAttribute("x1",p.x); l.setAttribute("y1",p.y); l.setAttribute("x2",q.x); l.setAttribute("y2",q.y);
+    l.setAttribute("pathLength","100"); svg.appendChild(l); segmentos.push(l);
+  }
+  puntos.forEach((p,i) => {
+    const b = document.createElement("button");
+    b.className = "estrella"; b.style.left = p.x+"%"; b.style.top = p.y+"%";
+    b.style.animationDelay = (i*.3)+"s"; b.setAttribute("aria-label","Estrella "+(i+1));
+    b.addEventListener("click", () => {
+      $("razonNum").textContent = `RAZÓN ${i+1} DE ${N}`;
+      $("razonTexto").textContent = CONFIG.razones[i];
+      $("razon").dataset.i = i; $("razon").classList.add("on");
+    });
+    zona.appendChild(b); estrellas.push(b);
+  });
+  crearZodiaco(svg, puntos);
+}
+$("razonCerrar").addEventListener("click", () => {
+  const i = +$("razon").dataset.i, N = CONFIG.razones.length;
+  $("razon").classList.remove("on");
+  vistas.add(i); estrellas[i].classList.add("vista");
+  $("contadorEstrellas").textContent = vistas.size;
+  segmentos.forEach((l,k) => { if(vistas.has(k) && vistas.has((k+1)%N)) l.classList.add("on"); });
+  if(vistas.size === N){
+    const m = $("mensajeConst"); m.textContent = CONFIG.mensajeFinal; m.classList.add("on"); encenderZodiaco();
+    setTimeout(() => lluvia(30), 900);
+    setTimeout(() => m.scrollIntoView({behavior:"smooth",block:"end"}), 300);
+  }
+});
+
+/* ================================================================
+   ♎ LIBRA (Anghelo) y ♑ CAPRICORNIO (Valeria)
+   Se ven apagadas en el cielo y se encienden, unidas al corazón,
+   cuando descubres las 12 razones.
+   ================================================================ */
+const ZOD = [
+  {id:"libra", glifo:"♎", nombre:"Libra", dueno:() => CONFIG.tuNombre, x:7, y:3, s:.22, ancla:3, lx:4, anc:"start",
+   pts:[[12,55],[48,12],[88,42],[55,92],[94,78],[80,98]],
+   aristas:[[0,1],[1,2],[2,3],[3,0],[2,4],[4,5]]},
+  {id:"capricornio", glifo:"♑", nombre:"Capricornio", dueno:() => CONFIG.suNombre, x:71, y:3, s:.22, ancla:3, lx:96, anc:"end",
+   pts:[[8,18],[14,32],[36,78],[48,88],[70,78],[95,45],[86,28],[62,22],[30,22]],
+   aristas:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,0]]}
+];
+function crearZodiaco(svg, corazon){
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs) => { const e = document.createElementNS(NS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+  ZOD.forEach(z => {
+    const g = el("g", {"class":"zod"});
+    const P = z.pts.map(([a,b]) => [z.x + a*z.s, z.y + b*z.s]);
+    z.aristas.forEach(([i,j]) => g.appendChild(el("line", {x1:P[i][0], y1:P[i][1], x2:P[j][0], y2:P[j][1]})));
+    P.forEach(([a,b]) => g.appendChild(el("circle", {cx:a, cy:b, r:.95})));
+    const tx = el("text", {x:z.lx, y:96, "text-anchor":z.anc, "font-size":3.1});
+    tx.textContent = `${z.glifo}︎ ${z.nombre} · ${z.dueno()}`;
+    g.appendChild(tx);
+    svg.appendChild(g);
+    // Línea que une la constelación con la estrella más cercana del corazón
+    const [ax, ay] = P[z.ancla]; let mejor = 0, dmin = Infinity;
+    corazon.forEach((h,i) => { const d = (h.x-ax)**2 + (h.y-ay)**2; if(d < dmin){ dmin = d; mejor = i; } });
+    const u = el("line", {x1:ax, y1:ay, x2:corazon[mejor].x, y2:corazon[mejor].y, "class":"union"});
+    svg.appendChild(u);
+    z.g = g; z.union = u;
+  });
+}
+function encenderZodiaco(){
+  ZOD.forEach((z,i) => {
+    setTimeout(() => z.g.classList.add("on"), 400 + i*600);
+    setTimeout(() => z.union.classList.add("on"), 1600 + i*400);
+  });
+}
+</script>
+</body>
+</html>
